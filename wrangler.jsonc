@@ -2,6 +2,5 @@
   "name": "becgrowth-blog",
   "compatibility_date": "2025-10-01",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": ".open-next/assets",
-  "workers_dev": false
+  "pages_build_output_dir": ".open-next/assets"
 }
