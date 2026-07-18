@@ -4,14 +4,15 @@ import Anthropic from '@anthropic-ai/sdk'
 type Props = { params: Promise<{ slug: string }> }
 
 export const runtime = 'edge'
+export const maxDuration = 60
 
 export default async function BlogPost({ params }: Props) {
   const { slug } = await params
 
   try {
     const supabase = createClient(
-     process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '',
-       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || ''
+      process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || '',
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || ''
     )
 
     const anthropic = new Anthropic({
@@ -33,8 +34,8 @@ export default async function BlogPost({ params }: Props) {
 
     if (!content) {
       const response = await anthropic.messages.create({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 2000,
+        model: 'claude-haiku-4-5',
+        max_tokens: 1500,
         messages: [
           {
             role: 'user',
@@ -51,19 +52,16 @@ Only return the JSON, nothing else.`,
       })
 
       const text = response.content[0].type === 'text' ? response.content[0].text : ''
-      
+
       try {
         const parsed = JSON.parse(text)
         title = parsed.title
         content = parsed.content
-      } catch (parseError) {
+      } catch {
         return <div style={{color:'white',padding:'40px'}}>Parse Error: {text}</div>
       }
 
-      const { error: insertError } = await supabase.from('blog_posts').insert({ slug, title, content })
-      if (insertError) {
-        return <div style={{color:'white',padding:'40px'}}>Insert Error: {JSON.stringify(insertError)}</div>
-      }
+      await supabase.from('blog_posts').insert({ slug, title, content })
     }
 
     const styles = `
@@ -79,23 +77,24 @@ Only return the JSON, nothing else.`,
       .hero { max-width: 800px; margin: 64px auto 0; padding: 0 24px 48px; border-bottom: 1px solid #1a1a1a; }
       .back-link { display: inline-flex; align-items: center; gap: 8px; color: #666; text-decoration: none; font-size: 13px; margin-bottom: 32px; }
       .post-label { display: inline-block; background: rgba(192,57,43,0.15); color: #c0392b; border: 1px solid rgba(192,57,43,0.3); padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 500; text-transform: uppercase; margin-bottom: 24px; }
-      .post-title { font-family: Playfair Display, serif; font-size: clamp(32px, 5vw, 52px); font-weight: 700; line-height: 1.15; color: #fff; margin-bottom: 24px; }
+      .post-title { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 700; line-height: 1.15; color: #fff; margin-bottom: 24px; }
       .post-meta { display: flex; align-items: center; gap: 16px; color: #555; font-size: 13px; }
       .content-wrapper { max-width: 800px; margin: 0 auto; padding: 48px 24px; }
-      .content-wrapper h2 { font-family: Playfair Display, serif; font-size: 28px; font-weight: 700; color: #fff; margin: 48px 0 16px; }
+      .content-wrapper h2 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: #fff; margin: 48px 0 16px; }
       .content-wrapper h3 { font-size: 18px; font-weight: 600; color: #e0e0e0; margin: 32px 0 12px; }
       .content-wrapper p { color: #aaa; font-size: 16px; line-height: 1.8; margin-bottom: 20px; font-weight: 300; }
       .content-wrapper ul, .content-wrapper ol { margin: 16px 0 24px 0; padding-left: 0; list-style: none; }
       .content-wrapper li { color: #aaa; font-size: 16px; line-height: 1.7; margin-bottom: 12px; padding-left: 20px; position: relative; font-weight: 300; }
-      .content-wrapper li::before { content: "->"; position: absolute; left: 0; color: #c0392b; font-size: 13px; top: 3px; }
+      .content-wrapper li::before { content: "→"; position: absolute; left: 0; color: #c0392b; font-size: 13px; top: 3px; }
       .content-wrapper strong { color: #e8e8e8; font-weight: 600; }
       .content-wrapper a { color: #c0392b; text-decoration: none; }
       .cta-section { background: linear-gradient(135deg, #1a0a0a 0%, #0f0505 100%); border: 1px solid #2a1010; border-radius: 16px; padding: 48px; margin: 64px 0 0; text-align: center; }
-      .cta-title { font-family: Playfair Display, serif; font-size: 32px; font-weight: 700; color: #fff; margin: 0 0 12px; line-height: 1.2; }
+      .cta-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: #fff; margin: 0 0 12px; line-height: 1.2; }
       .cta-desc { color: #666; font-size: 15px; margin-bottom: 32px; }
       .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #c0392b; color: #fff; padding: 14px 28px; border-radius: 100px; font-size: 15px; font-weight: 500; text-decoration: none; }
       footer { border-top: 1px solid #1a1a1a; margin-top: 80px; padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; }
       footer p { color: #444; font-size: 13px; }
+      @media (max-width: 640px) { nav { padding: 16px 20px; } .nav-links { display: none; } .hero { margin-top: 40px; } .cta-section { padding: 32px 24px; } footer { flex-direction: column; gap: 16px; padding: 24px 20px; } }
     `
 
     return (
@@ -117,6 +116,7 @@ Only return the JSON, nothing else.`,
           <h1 className="post-title">{title}</h1>
           <div className="post-meta">
             <span>BEC Growth</span>
+            <span>·</span>
             <span>Cold Email and Client Acquisition</span>
           </div>
         </div>
