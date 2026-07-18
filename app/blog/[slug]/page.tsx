@@ -35,7 +35,7 @@ export default async function BlogPost({ params }: Props) {
     if (!content) {
       const response = await anthropic.messages.create({
         model: 'claude-haiku-4-5',
-        max_tokens: 1500,
+        max_tokens: 3000,
         messages: [
           {
             role: 'user',
@@ -103,7 +103,7 @@ IMPORTANT: Return ONLY the raw JSON object. No markdown, no backticks, no explan
       .nav-logo span { color: #c0392b; }
       .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
       .nav-links a { color: #999; text-decoration: none; font-size: 14px; }
-      .nav-cta { background: #c0392b; color: #fff; padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 500; text-decoration: none; }
+      .nav-cta { background: #c0392b; color: #fff !important; padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 500; text-decoration: none; }
       .hero { max-width: 800px; margin: 64px auto 0; padding: 0 24px 48px; border-bottom: 1px solid #1a1a1a; }
       .back-link { display: inline-flex; align-items: center; gap: 8px; color: #666; text-decoration: none; font-size: 13px; margin-bottom: 32px; }
       .post-label { display: inline-block; background: rgba(192,57,43,0.15); color: #c0392b; border: 1px solid rgba(192,57,43,0.3); padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 500; text-transform: uppercase; margin-bottom: 24px; }
@@ -121,7 +121,8 @@ IMPORTANT: Return ONLY the raw JSON object. No markdown, no backticks, no explan
       .cta-section { background: linear-gradient(135deg, #1a0a0a 0%, #0f0505 100%); border: 1px solid #2a1010; border-radius: 16px; padding: 48px; margin: 64px 0 0; text-align: center; }
       .cta-title { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: #fff; margin: 0 0 12px; line-height: 1.2; }
       .cta-desc { color: #666; font-size: 15px; margin-bottom: 32px; }
-      .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #c0392b; color: #fff; padding: 14px 28px; border-radius: 100px; font-size: 15px; font-weight: 500; text-decoration: none; }
+      .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #c0392b; color: #fff !important; padding: 14px 28px; border-radius: 100px; font-size: 15px; font-weight: 600; text-decoration: none; border: none; }
+      .cta-btn:hover { background: #a93226; }
       footer { border-top: 1px solid #1a1a1a; margin-top: 80px; padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; }
       footer p { color: #444; font-size: 13px; }
       @media (max-width: 640px) { nav { padding: 16px 20px; } .nav-links { display: none; } .hero { margin-top: 40px; } .cta-section { padding: 32px 24px; } footer { flex-direction: column; gap: 16px; padding: 24px 20px; } }
@@ -138,7 +139,7 @@ IMPORTANT: Return ONLY the raw JSON object. No markdown, no backticks, no explan
             <li><a href="https://becgrowth.com/about">About Us</a></li>
             <li><a href="https://becgrowth.com/testimonials">Testimonials</a></li>
           </ul>
-          <a href="https://becgrowth.com/#book" className="nav-cta">Book a Call</a>
+          <a href="https://calendly.com/becgrowth/priority" className="nav-cta">Book a Call</a>
         </nav>
         <div className="hero">
           <a href="https://blog.becgrowth.com" className="back-link">← Back to Blog</a>
@@ -155,7 +156,7 @@ IMPORTANT: Return ONLY the raw JSON object. No markdown, no backticks, no explan
           <div className="cta-section">
             <p className="cta-title">Ready to Sign Clients On-Demand?</p>
             <p className="cta-desc">BEC Growth builds and manages your entire cold email system from infrastructure to reply handling.</p>
-            <a href="https://becgrowth.com/#book" className="cta-btn">Book a Call →</a>
+            <a href="https://calendly.com/becgrowth/priority" className="cta-btn">Book a Call →</a>
           </div>
         </div>
         <footer>
