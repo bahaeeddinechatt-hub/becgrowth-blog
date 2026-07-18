@@ -39,14 +39,26 @@ export default async function BlogPost({ params }: Props) {
         messages: [
           {
             role: 'user',
-            content: `Write a detailed, helpful blog post for a B2B cold email agency blog about: "${slug.replace(/-/g, ' ')}".
+            content: `Write a practical, human blog post for the BEC Growth blog about: "${slug.replace(/-/g, ' ')}".
 
-Format the response as JSON with this structure:
+BEC Growth is a B2B cold email agency that helps service businesses and agencies sign 5-20+ clients per month using cold email only. They handle everything - infrastructure, leads, copy, campaigns, reply handling.
+
+Rules:
+- Write like a human, not a marketer. No buzzwords, no corporate speak.
+- Use "-" instead of em dashes.
+- Start by calling out a real pain point the reader is experiencing.
+- Build value throughout - give real, actionable advice they can use.
+- End by naturally presenting BEC Growth as the solution for people who want this done for them.
+- Do NOT mention BEC Growth until the very end, and keep it subtle.
+- Tone: direct, confident, practical. Like advice from someone who has done this 100 times.
+- No fluff. No "In today's digital landscape..." openers. Just get to the point.
+
+Format the response as JSON:
 {"title": "...", "content": "..."}
 
-The content should be in HTML format with proper h2, h3, p, ul, li tags.
-Make it 800-1200 words, practical, and valuable for business owners looking to grow through cold email.
-Only return the JSON, nothing else.`,
+The content must be in clean HTML using h2, h3, p, ul, li tags only.
+Aim for 900-1100 words.
+IMPORTANT: Return ONLY the raw JSON object. No markdown, no backticks, no explanation.`,
           },
         ],
       })
@@ -54,7 +66,8 @@ Only return the JSON, nothing else.`,
       const text = response.content[0].type === 'text' ? response.content[0].text : ''
 
       try {
-        const parsed = JSON.parse(text)
+        const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+        const parsed = JSON.parse(clean)
         title = parsed.title
         content = parsed.content
       } catch {
