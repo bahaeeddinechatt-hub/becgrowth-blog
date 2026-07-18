@@ -65,14 +65,31 @@ IMPORTANT: Return ONLY the raw JSON object. No markdown, no backticks, no explan
 
       const text = response.content[0].type === 'text' ? response.content[0].text : ''
 
+      let parsedTitle = ''
+      let parsedContent = ''
+
       try {
         const clean = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-        const parsed = JSON.parse(clean)
-        title = parsed.title
-        content = parsed.content
+        try {
+          const parsed = JSON.parse(clean)
+          parsedTitle = parsed.title
+          parsedContent = parsed.content
+        } catch {
+          const titleMatch = clean.match(/"title"\s*:\s*"((?:[^"\\]|\\.)*)"/)
+          const contentMatch = clean.match(/"content"\s*:\s*"((?:[^"\\]|\\.)*)"/)
+          if (titleMatch && contentMatch) {
+            parsedTitle = titleMatch[1].replace(/\\"/g, '"').replace(/\\n/g, '')
+            parsedContent = contentMatch[1].replace(/\\"/g, '"').replace(/\\n/g, '')
+          } else {
+            return <div style={{color:'white',padding:'40px'}}>Parse Error: {text}</div>
+          }
+        }
       } catch {
-        return <div style={{color:'white',padding:'40px'}}>Parse Error: {text}</div>
+        return <div style={{color:'white',padding:'40px'}}>Error processing response</div>
       }
+
+      title = parsedTitle
+      content = parsedContent
 
       await supabase.from('blog_posts').insert({ slug, title, content })
     }
