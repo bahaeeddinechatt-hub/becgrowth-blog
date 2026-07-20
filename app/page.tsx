@@ -123,7 +123,7 @@ export default function Home() {
           <li><a href="/" className="active">Blog</a></li>
           <li><a href="https://becgrowth.com/testimonials">Testimonials</a></li>
         </ul>
-        <a href="https://becgrowth.com/#book" className="nav-cta">Book a Call ↗</a>
+        <a href="https://calendly.com/becgrowth/priority" className="nav-cta">Book a Call ↗</a>
       </nav>
 
       <a href="https://becgrowth.com" className="back-link">← Back to Home</a>
@@ -167,7 +167,7 @@ export default function Home() {
             <li><a href="https://becgrowth.com/about">About Us</a></li>
             <li><a href="https://becgrowth.com/testimonials">Testimonials</a></li>
             <li><a href="/">Blog</a></li>
-            <li><a href="https://becgrowth.com/#book">Book a Call</a></li>
+            <li><a href="https://calendly.com/becgrowth/priority">Book a Call</a></li>
           </ul>
         </div>
       </footer>
