@@ -94,6 +94,8 @@ IMPORTANT: Return ONLY the raw JSON object. No markdown, no backticks, no explan
       await supabase.from('blog_posts').insert({ slug, title, content })
     }
 
+    const metaDescription = `${title} - Practical guide from BEC Growth, the B2B cold email agency helping businesses sign 5-20+ clients per month. No ads, no fluff - just cold email that works.`
+
     const styles = `
       @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap');
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -130,6 +132,16 @@ IMPORTANT: Return ONLY the raw JSON object. No markdown, no backticks, no explan
 
     return (
       <>
+        <head>
+          <title>{title}</title>
+          <meta name="description" content={metaDescription} />
+          <meta property="og:title" content={title} />
+          <meta property="og:description" content={metaDescription} />
+          <meta property="og:type" content="article" />
+          <meta name="twitter:card" content="summary" />
+          <meta name="twitter:title" content={title} />
+          <meta name="twitter:description" content={metaDescription} />
+        </head>
         <style dangerouslySetInnerHTML={{ __html: styles }} />
         <nav>
           <a href="https://becgrowth.com" className="nav-logo"><span>bec</span>growth</a>
