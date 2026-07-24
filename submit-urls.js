@@ -11,13 +11,26 @@ oauth2Client.setCredentials(tokens);
 const indexing = google.indexing({ version: 'v3', auth: oauth2Client });
 
 const urls = [
-'https://blog.becgrowth.com/blog/cold-email-for-career-coaching-companies',
-'https://blog.becgrowth.com/blog/cold-email-for-productivity-coaching-companies',
-'https://blog.becgrowth.com/blog/cold-email-for-health-coaching-companies',
-'https://blog.becgrowth.com/blog/cold-email-for-wellness-coaching-companies',
-'https://blog.becgrowth.com/blog/cold-email-for-nutrition-coaching-companies',
-'https://blog.becgrowth.com/blog/cold-email-for-relationship-coaching-companies',
-'https://blog.becgrowth.com/blog/b2b-cold-email-the-complete-guide',
+'https://blog.becgrowth.com/blog/cold-email-for-business-valuation-firms',
+'https://blog.becgrowth.com/blog/cold-email-for-due-diligence-firms',
+'https://blog.becgrowth.com/blog/cold-email-for-turnaround-consulting-firms',
+'https://blog.becgrowth.com/blog/cold-email-for-bankruptcy-advisory-firms',
+'https://blog.becgrowth.com/blog/cold-email-for-litigation-support-firms',
+'https://blog.becgrowth.com/blog/cold-email-for-forensic-accounting-firms',
+'https://blog.becgrowth.com/blog/cold-email-for-fraud-investigation-firms',
+'https://blog.becgrowth.com/blog/cold-email-for-insurance-claims-firms',
+'https://blog.becgrowth.com/blog/cold-email-for-actuarial-consulting-firms',
+'https://blog.becgrowth.com/blog/b2b-cold-email-agency-pricing-2026',
+'https://blog.becgrowth.com/blog/cold-email-agency-vs-doing-it-yourself',
+'https://blog.becgrowth.com/blog/how-to-choose-cold-email-agency-2026',
+'https://blog.becgrowth.com/blog/best-cold-email-agencies-2026',
+'https://blog.becgrowth.com/blog/top-b2b-cold-email-agencies-2026',
+'https://blog.becgrowth.com/blog/cold-email-agency-red-flags-to-avoid',
+'https://blog.becgrowth.com/blog/what-to-expect-from-cold-email-agency',
+'https://blog.becgrowth.com/blog/cold-email-agency-onboarding-process',
+'https://blog.becgrowth.com/blog/cold-email-agency-reporting-metrics',
+'https://blog.becgrowth.com/blog/cold-email-agency-contract-guide',
+'https://blog.becgrowth.com/blog/cold-email-agency-guarantee-guide',
 ];
 
 async function submitUrls() {
