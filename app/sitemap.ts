@@ -1874,6 +1874,7 @@ const blogPosts18: MetadataRoute.Sitemap = [
   { url: 'https://blog.becgrowth.com/blog/bec-growth-team-explained', lastModified: new Date() },
   { url: 'https://blog.becgrowth.com/blog/bec-growth-values-explained', lastModified: new Date() },
   { url: 'https://blog.becgrowth.com/blog/bec-growth-mission-explained', lastModified: new Date() },
+  { url: 'https://blog.becgrowth.com/blog/bec-growth-vision-explained', lastModified: new Date() },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -1894,5 +1895,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...blogPosts13,
     ...blogPosts14,
     ...blogPosts15,
+    ...blogPosts16,
+    ...blogPosts17,
+    ...blogPosts18,
   ];
 }
