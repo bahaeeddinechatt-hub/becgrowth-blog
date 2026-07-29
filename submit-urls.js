@@ -207,6 +207,7 @@ const urls = [
 'https://blog.becgrowth.com/blog/bec-growth-team-explained',
 'https://blog.becgrowth.com/blog/bec-growth-values-explained',
 'https://blog.becgrowth.com/blog/bec-growth-mission-explained',
+'https://blog.becgrowth.com/blog/bec-growth-vision-explained',
 ];
 
 async function submitUrls() {
