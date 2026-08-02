@@ -2961,7 +2961,9 @@ const blogPosts23: MetadataRoute.Sitemap = [
   { url: 'https://blog.becgrowth.com/blog/cold-email-agency-keeping-clients', lastModified: new Date() },
   { url: 'https://blog.becgrowth.com/blog/cold-email-agency-delighting-clients', lastModified: new Date() },
   { url: 'https://blog.becgrowth.com/blog/cold-email-agency-surprising-clients', lastModified: new Date() },
+  { url: 'https://blog.becgrowth.com/blog/cold-email-agency-growing-clients', lastModified: new Date() },
 ];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticPages,
@@ -2987,5 +2989,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...blogPosts20,
     ...blogPosts21,
     ...blogPosts22,
+    ...blogPosts23,
   ];
 }
