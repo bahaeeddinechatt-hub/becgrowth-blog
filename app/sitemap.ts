@@ -3177,6 +3177,7 @@ const blogPosts24: MetadataRoute.Sitemap = [
   { url: 'https://blog.becgrowth.com/blog/cold-email-list-building-consulting', lastModified: new Date() },
   { url: 'https://blog.becgrowth.com/blog/cold-email-list-building-startup-2026', lastModified: new Date() },
   { url: 'https://blog.becgrowth.com/blog/cold-email-list-building-enterprise', lastModified: new Date() },
+  { url: 'https://blog.becgrowth.com/blog/cold-email-list-building-freelance', lastModified: new Date() },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -3205,5 +3206,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...blogPosts21,
     ...blogPosts22,
     ...blogPosts23,
+    ...blogPosts24,
   ];
 }
