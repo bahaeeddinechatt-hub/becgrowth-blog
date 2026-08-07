@@ -3787,6 +3787,7 @@ const blogPosts27: MetadataRoute.Sitemap = [
   { url: 'https://blog.becgrowth.com/blog/cold-email-for-b2b-manufacturers', lastModified: new Date() },
   { url: 'https://blog.becgrowth.com/blog/cold-email-for-oem-companies', lastModified: new Date() },
   { url: 'https://blog.becgrowth.com/blog/cold-email-for-contract-manufacturers', lastModified: new Date() },
+  { url: 'https://blog.becgrowth.com/blog/cold-email-for-industrial-distributors', lastModified: new Date() },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -3818,5 +3819,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...blogPosts24,
     ...blogPosts25,
     ...blogPosts26,
+    ...blogPosts27,
   ];
 }
