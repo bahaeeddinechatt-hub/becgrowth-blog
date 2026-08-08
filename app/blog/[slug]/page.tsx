@@ -33,6 +33,56 @@ export default async function BlogPost({ params }: Props) {
     let content = data?.content
 
     if (!content) {
+      const stopWords = ['cold', 'email', 'for', 'the', 'a', 'of', 'to', 'in', 'on', 'vs', 'b2b', 'and', '2026']
+      const keywords = slug
+        .replace(/-/g, ' ')
+        .split(' ')
+        .filter((w) => w.length > 2 && !stopWords.includes(w))
+
+      let relatedPosts: { slug: string; title: string }[] = []
+
+      if (keywords.length > 0) {
+        const orFilter = keywords.map((k) => `slug.ilike.%${k}%`).join(',')
+        const { data: relatedData } = await supabase
+          .from('blog_posts')
+          .select('slug, title')
+          .or(orFilter)
+          .neq('slug', slug)
+          .limit(25)
+
+        relatedPosts = relatedData || []
+      }
+
+      if (relatedPosts.length < 6) {
+        const { data: fallbackData } = await supabase
+          .from('blog_posts')
+          .select('slug, title')
+          .neq('slug', slug)
+          .limit(15)
+
+        const existingSlugs = new Set(relatedPosts.map((p) => p.slug))
+        for (const p of fallbackData || []) {
+          if (!existingSlugs.has(p.slug)) relatedPosts.push(p)
+        }
+      }
+
+      const relatedPostsList = relatedPosts
+        .slice(0, 20)
+        .map((p) => `- "${p.title}" -> https://blog.becgrowth.com/blog/${p.slug}`)
+        .join('\n')
+
+      const linkingInstructions = relatedPosts.length > 0
+        ? `
+LINKING REQUIREMENTS:
+Here is a list of other real, published posts on this blog you can link to:
+${relatedPostsList}
+
+- Naturally hyperlink 1-2 relevant phrases within the body of the article to 2 of the most topically relevant posts from that list, using real <a href="URL">anchor text</a> tags. Only link if it fits naturally in a sentence - do not force it.
+- At the end of the article (after the last h2 section), add a section titled "Related Guides" with an h2, followed by a ul with 3-5 <li><a href="URL">Post Title</a></li> items, choosing the most relevant posts from the list above.
+- Do NOT invent URLs or slugs. Only link to the exact URLs listed above.
+`
+        : ''
+
       const response = await anthropic.messages.create({
         model: 'claude-haiku-4-5',
         max_tokens: 3000,
@@ -43,20 +93,29 @@ export default async function BlogPost({ params }: Props) {
 
 BEC Growth is a B2B cold email agency that helps service businesses and agencies sign 5-20+ clients per month using cold email only. They handle everything - infrastructure, leads, copy, campaigns, reply handling.
 
-Rules:
+VALUE RULES (this is the most important part):
+- Give real, specific, usable advice - actual frameworks, actual numbers, actual examples. Someone should be able to take this post and do something with it today, without ever talking to BEC Growth.
+- Avoid vague advice like "personalize your emails" or "test different subject lines" with no specifics. Instead: give the actual structure, the actual example line, the actual benchmark number.
+- Include at least one concrete example (a sample subject line, a sample opener, a sample number/benchmark) somewhere in the post - not just abstract advice.
+- Write like a practitioner sharing what actually works, not a marketer selling a service.
+
+FUNNEL RULES (how this connects to BEC Growth):
+- Do NOT mention BEC Growth until the final section.
+- The value in the post should be real enough to work standalone. The soft pitch is for people who read all this and think "I get it, but I don't want to build/run/manage this myself."
+- In the final section, name the specific gap between "knowing this" and "having it actually running well at scale" - that gap is what BEC Growth closes. Be specific to the topic of this post, not generic.
+- Keep the pitch short (2-4 sentences) and undramatic. No hard sell, no urgency language, no "limited time."
+
+STYLE RULES:
 - Write like a human, not a marketer. No buzzwords, no corporate speak.
 - Use "-" instead of em dashes.
 - Start by calling out a real pain point the reader is experiencing.
-- Build value throughout - give real, actionable advice they can use.
-- End by naturally presenting BEC Growth as the solution for people who want this done for them.
-- Do NOT mention BEC Growth until the very end, and keep it subtle.
 - Tone: direct, confident, practical. Like advice from someone who has done this 100 times.
 - No fluff. No "In today's digital landscape..." openers. Just get to the point.
-
+${linkingInstructions}
 Format the response as JSON:
 {"title": "...", "content": "..."}
 
-The content must be in clean HTML using h2, h3, p, ul, li tags only.
+The content must be in clean HTML using h2, h3, p, ul, li, a tags only.
 Aim for 900-1100 words.
 IMPORTANT: Return ONLY the raw JSON object. No markdown, no backticks, no explanation.`,
           },
